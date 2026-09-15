@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="UTM link builder for North Highland digital marketing campaigns.">
+<title>UTM Link Builder</title>
+<style>
+  :root {
+    --nh-navy: #132E53;
+    --nh-navy-dark: #0C1F3A;
+    --nh-teal: #039FB8;
+    --nh-teal-hover: #028599;
+    --nh-yellow: #DEE22A;
+    --nh-bg-white: #FFFFFF;
+    --nh-bg-light: #F5F6F7;
+    --nh-text: #3a3a3c;
+    --nh-text-muted: #6F6F72;
+    --nh-text-light: #525252;
+    --nh-border: #D1D3D4;
+    --nh-success: #2E7D32;
+    --nh-success-text: #1B5E20;
+    --nh-font-display: 'Arial Black', Impact, sans-serif;
+    --nh-font-body: Arial, Helvetica, sans-serif;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 48px;
+    --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    padding: var(--space-xl) var(--space-lg);
+    font-family: var(--nh-font-body);
+    color: var(--nh-text);
+    background: var(--nh-bg-light);
+    line-height: 1.5;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  header.page-head {
+    margin-bottom: var(--space-xl);
+  }
+
+  h1 {
+    font-family: var(--nh-font-display);
+    font-weight: 700;
+    font-size: 28px;
+    letter-spacing: 0.02em;
+    color: var(--nh-navy);
+    text-transform: uppercase;
+    margin: 0 0 var(--space-xs) 0;
+  }
+
+  .eyebrow {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--nh-teal);
+    margin: 0 0 var(--space-sm) 0;
+  }
+
+  .lead {
+    color: var(--nh-text-muted);
+    font-size: 15px;
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .card {
+    background: var(--nh-bg-white);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .card h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--nh-navy);
+    margin: 0 0 var(--space-md) 0;
+  }
+
+  .field {
+    margin-bottom: var(--space-md);
+  }
+
+  .field:last-child { margin-bottom: 0; }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--nh-text-light);
+    margin-bottom: var(--space-xs);
+  }
+
+  .field .hint {
+    font-size: 12px;
+    color: var(--nh-text-muted);
+    margin-top: var(--space-xs);
+  }
+
+  input[type="text"], input[type="url"], select {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: var(--nh-font-body);
+    color: var(--nh-text);
+    border: 1px solid var(--nh-border);
+    border-radius: 4px;
+    background: var(--nh-bg-white);
+    transition: border-color var(--transition);
+  }
+
+  input[type="text"]:focus, input[type="url"]:focus, select:focus {
+    outline: none;
+    border-color: var(--nh-teal);
+    box-shadow: 0 0 0 3px rgba(3,159,184,0.15);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+  }
+
+  @media (max-width: 640px) {
+    .row { grid-template-columns: 1fr; }
+    body { padding: var(--space-lg) var(--space-md); }
+  }
+
+  select.preset {
+    border-color: var(--nh-teal);
+    font-weight: 700;
+    color: var(--nh-navy);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background: var(--nh-teal);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: var(--nh-font-body);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+
+  .btn:hover { background: var(--nh-teal-hover); }
+
+  .btn.secondary {
+    background: transparent;
+    color: var(--nh-teal);
+    border: 2px solid var(--nh-teal);
+    padding: 8px 18px;
+  }
+
+  .btn.secondary:hover { background: rgba(3,159,184,0.08); }
+
+  .output-box {
+    background: var(--nh-bg-light);
+    border: 1px solid var(--nh-border);
+    border-radius: 4px;
+    padding: var(--space-md);
+    font-size: 14px;
+    word-break: break-all;
+    color: var(--nh-navy);
+    margin-bottom: var(--space-md);
+    min-height: 44px;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .copied-msg {
+    font-size: 13px;
+    color: var(--nh-success-text);
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity var(--transition);
+  }
+
+  .copied-msg.show { opacity: 1; }
+
+  .top-border-teal {
+    border-top: 3px solid var(--nh-teal);
+  }
+
+  footer.foot {
+    font-size: 12px;
+    color: var(--nh-text-muted);
+    text-align: left;
+    margin-top: var(--space-xl);
+    max-width: 70ch;
+  }
+
+  a { color: var(--nh-teal); }
+
+  :focus-visible {
+    outline: 2px solid var(--nh-teal);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-head">
+      <p class="eyebrow">Digital Marketing</p>
+      <h1>UTM Link Builder</h1>
+      <p class="lead">Build a tagged campaign link. Pick a channel preset to auto-fill the common fields, then adjust campaign, term, and content as needed.</p>
+    </header>
+
+    <section class="card top-border-teal">
+      <h2>1. Destination &amp; Channel</h2>
+      <div class="field">
+        <label for="baseUrl">Destination URL</label>
+        <input type="url" id="baseUrl" placeholder="https://www.northhighland.com/insights/example-page" oninput="render()">
+      </div>
+      <div class="field">
+        <label for="preset">Channel preset</label>
+        <select id="preset" class="preset" onchange="applyPreset()">
+          <option value="">— Choose a channel to auto-fill fields —</option>
+          <option value="sprout">Sprout Social (scheduled social post)</option>
+          <option value="everyonesocial">EveryoneSocial / NH Now (employee advocacy)</option>
+          <option value="google_cpc">Google Ads (paid search)</option>
+          <option value="meta_paid">Meta Paid Social (Facebook / Instagram ads)</option>
+          <option value="organic_social">Organic Social (manual post)</option>
+          <option value="hubspot_email">Email — HubSpot</option>
+          <option value="display">Display Ads</option>
+          <option value="custom">Custom / Other (clear fields)</option>
+        </select>
+        <p class="hint" id="presetHint"></p>
+      </div>
+    </section>
+
+    <section class="card top-border-teal">
+      <h2>2. UTM Parameters</h2>
+      <div class="row">
+        <div class="field">
+          <label for="source">utm_source</label>
+          <input type="text" id="source" list="sourceOptions" oninput="render()">
+          <datalist id="sourceOptions">
+            <option value="google">
+            <option value="facebook">
+            <option value="instagram">
+            <option value="linkedin">
+            <option value="twitter">
+            <option value="hs_automation">
+            <option value="hs_email">
+            <option value="substack">
+            <option value="displayads">
+          </datalist>
+        </div>
+        <div class="field">
+          <label for="medium">utm_medium</label>
+          <input type="text" id="medium" list="mediumOptions" oninput="render()">
+          <datalist id="mediumOptions">
+            <option value="cpc">
+            <option value="paidsocial">
+            <option value="display">
+            <option value="social">
+            <option value="email">
+            <option value="referral">
+            <option value="network">
+          </datalist>
+        </div>
+      </div>
+      <div class="field">
+        <label for="campaign">utm_campaign</label>
+        <input type="text" id="campaign" list="campaignOptions" oninput="render()">
+        <datalist id="campaignOptions">
+          <option value="social_general">
+          <option value="everyonesocial">
+          <option value="newsroom">
+          <option value="microsite">
+          <option value="industry-expertise">
+          <option value="NHDigital">
+        </datalist>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="term">utm_term <span style="font-weight:400;color:var(--nh-text-muted);">(optional)</span></label>
+          <input type="text" id="term" oninput="render()">
+        </div>
+        <div class="field">
+          <label for="content">utm_content <span style="font-weight:400;color:var(--nh-text-muted);">(optional)</span></label>
+          <input type="text" id="content" oninput="render()">
+        </div>
+      </div>
+      <div class="field" id="epochHelper" style="display:none;">
+        <button type="button" class="btn secondary" onclick="insertEpoch()">Insert current timestamp into utm_content</button>
+        <p class="hint">Sprout Social replaces <code>{TIMESTAMP_EPOCH}</code> automatically when it publishes. Only use this button if you're building the link manually, outside Sprout.</p>
+      </div>
+    </section>
+
+    <section class="card top-border-teal">
+      <h2>3. Your Tagged Link</h2>
+      <div class="output-box" id="output">Fill in a destination URL to get started.</div>
+      <div class="actions">
+        <button class="btn" onclick="copyLink()">Copy link</button>
+        <button class="btn secondary" onclick="resetForm()">Reset</button>
+        <span class="copied-msg" id="copiedMsg">Copied!</span>
+      </div>
+    </section>
+
+    <footer class="foot">
+      Presets and field values reflect North Highland's GA4 traffic-source data reviewed Sep 2025–Sep 2026, plus documented tagging for Sprout Social and EveryoneSocial. Update the dropdown options directly in this file as channels change.
+    </footer>
+  </div>
+
+<script>
+  const presets = {
+    sprout: {
+      hint: "Set utm_source to the social network you're posting to (facebook, linkedin, instagram, twitter). Sprout fills utm_content automatically at publish time — leave the {TIMESTAMP_EPOCH} token as-is.",
+      source: "", medium: "social", campaign: "social_general", term: "", content: "{TIMESTAMP_EPOCH}",
+      showEpoch: false
+    },
+    everyonesocial: {
+      hint: "utm_source is normally a per-user ID that EveryoneSocial generates automatically. If you're building this link manually, leave it blank or use a placeholder. Set utm_medium to the network being shared to.",
+      source: "", medium: "linkedin", campaign: "everyonesocial", term: "", content: "",
+      showEpoch: false
+    },
+    google_cpc: {
+      hint: "Campaign and term are typically auto-tagged by Google Ads — only fill these in for manual links.",
+      source: "google", medium: "cpc", campaign: "", term: "", content: "",
+      showEpoch: false
+    },
+    meta_paid: {
+      hint: "Campaign naming convention example: REGION_##_rocketppc_performance_audience_geo (e.g. UK_06_rocketppc_performance_warm_atc_uk).",
+      source: "facebook", medium: "paidsocial", campaign: "", term: "", content: "",
+      showEpoch: false
+    },
+    organic_social: {
+      hint: "Pick the network for utm_source (linkedin, facebook, instagram, twitter). Common campaign values: newsroom, social_general, microsite, industry-expertise.",
+      source: "linkedin", medium: "social", campaign: "", term: "", content: "",
+      showEpoch: true
+    },
+    hubspot_email: {
+      hint: "utm_source is usually hs_automation (workflow emails) or hs_email (one-off sends).",
+      source: "hs_automation", medium: "email", campaign: "", term: "", content: "",
+      showEpoch: false
+    },
+    display: {
+      hint: "",
+      source: "displayads", medium: "display", campaign: "", term: "", content: "",
+      showEpoch: false
+    },
+    custom: {
+      hint: "All fields cleared — build your own from scratch.",
+      source: "", medium: "", campaign: "", term: "", content: "",
+      showEpoch: false
+    }
+  };
+
+  function applyPreset() {
+    const key = document.getElementById('preset').value;
+    const hintEl = document.getElementById('presetHint');
+    const epochHelper = document.getElementById('epochHelper');
+    if (!key) { hintEl.textContent = ''; epochHelper.style.display = 'none'; render(); return; }
+    const p = presets[key];
+    document.getElementById('source').value = p.source;
+    document.getElementById('medium').value = p.medium;
+    document.getElementById('campaign').value = p.campaign;
+    document.getElementById('term').value = p.term;
+    document.getElementById('content').value = p.content;
+    hintEl.textContent = p.hint;
+    epochHelper.style.display = p.showEpoch ? 'block' : 'none';
+    render();
+  }
+
+  function insertEpoch() {
+    document.getElementById('content').value = Math.floor(Date.now() / 1000).toString();
+    render();
+  }
+
+  function render() {
+    const base = document.getElementById('baseUrl').value.trim();
+    const output = document.getElementById('output');
+    if (!base) {
+      output.textContent = 'Fill in a destination URL to get started.';
+      return;
+    }
+    const params = [];
+    const fields = [
+      ['utm_source', 'source'],
+      ['utm_medium', 'medium'],
+      ['utm_campaign', 'campaign'],
+      ['utm_term', 'term'],
+      ['utm_content', 'content']
+    ];
+    fields.forEach(([key, id]) => {
+      const val = document.getElementById(id).value.trim();
+      if (val) params.push(key + '=' + encodeURIComponent(val).replace(/%7B/g, '{').replace(/%7D/g, '}'));
+    });
+    if (params.length === 0) {
+      output.textContent = base;
+      return;
+    }
+    const separator = base.includes('?') ? '&' : '?';
+    output.textContent = base + separator + params.join('&');
+  }
+
+  function copyLink() {
+    const text = document.getElementById('output').textContent;
+    const msg = document.getElementById('copiedMsg');
+    const showMsg = () => {
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 1800);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showMsg).catch(() => fallbackCopy(text, showMsg));
+    } else {
+      fallbackCopy(text, showMsg);
+    }
+  }
+
+  function fallbackCopy(text, cb) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    cb();
+  }
+
+  function resetForm() {
+    document.getElementById('baseUrl').value = '';
+    document.getElementById('preset').value = '';
+    ['source','medium','campaign','term','content'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('presetHint').textContent = '';
+    document.getElementById('epochHelper').style.display = 'none';
+    render();
+  }
+
+  render();
+</script>
+</body>
+</html>
