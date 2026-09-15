@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +45,7 @@
   }
 
   .wrap {
-    max-width: 760px;
+    max-width: 1200px;
     margin: 0 auto;
   }
 
@@ -137,9 +138,31 @@
     gap: var(--space-md);
   }
 
+  .row-dest {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-md);
+    align-items: start;
+  }
+
+  .row-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-md);
+  }
+
+  @media (max-width: 900px) {
+    .row-dest { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 640px) {
     .row { grid-template-columns: 1fr; }
+    .row-fit { grid-template-columns: 1fr 1fr; }
     body { padding: var(--space-lg) var(--space-md); }
+  }
+
+  @media (max-width: 420px) {
+    .row-fit { grid-template-columns: 1fr; }
   }
 
   select.preset {
@@ -234,30 +257,32 @@
 
     <section class="card top-border-teal">
       <h2>1. Destination &amp; Channel</h2>
-      <div class="field">
-        <label for="baseUrl">Destination URL</label>
-        <input type="url" id="baseUrl" placeholder="https://www.northhighland.com/insights/example-page" oninput="render()">
+      <div class="row-dest">
+        <div class="field">
+          <label for="baseUrl">Destination URL</label>
+          <input type="url" id="baseUrl" placeholder="https://www.northhighland.com/insights/example-page" oninput="render()">
+        </div>
+        <div class="field">
+          <label for="preset">Channel preset</label>
+          <select id="preset" class="preset" onchange="applyPreset()">
+            <option value="">— Choose a channel —</option>
+            <option value="sprout">Sprout Social (scheduled social post)</option>
+            <option value="everyonesocial">EveryoneSocial / NH Now (employee advocacy)</option>
+            <option value="google_cpc">Google Ads (paid search)</option>
+            <option value="meta_paid">Meta Paid Social (Facebook / Instagram ads)</option>
+            <option value="organic_social">Organic Social (manual post)</option>
+            <option value="hubspot_email">Email — HubSpot</option>
+            <option value="display">Display Ads</option>
+            <option value="custom">Custom / Other (clear fields)</option>
+          </select>
+        </div>
       </div>
-      <div class="field">
-        <label for="preset">Channel preset</label>
-        <select id="preset" class="preset" onchange="applyPreset()">
-          <option value="">— Choose a channel to auto-fill fields —</option>
-          <option value="sprout">Sprout Social (scheduled social post)</option>
-          <option value="everyonesocial">EveryoneSocial / NH Now (employee advocacy)</option>
-          <option value="google_cpc">Google Ads (paid search)</option>
-          <option value="meta_paid">Meta Paid Social (Facebook / Instagram ads)</option>
-          <option value="organic_social">Organic Social (manual post)</option>
-          <option value="hubspot_email">Email — HubSpot</option>
-          <option value="display">Display Ads</option>
-          <option value="custom">Custom / Other (clear fields)</option>
-        </select>
-        <p class="hint" id="presetHint"></p>
-      </div>
+      <p class="hint" id="presetHint"></p>
     </section>
 
     <section class="card top-border-teal">
       <h2>2. UTM Parameters</h2>
-      <div class="row">
+      <div class="row-fit">
         <div class="field">
           <label for="source">utm_source</label>
           <input type="text" id="source" list="sourceOptions" oninput="render()">
@@ -286,20 +311,18 @@
             <option value="network">
           </datalist>
         </div>
-      </div>
-      <div class="field">
-        <label for="campaign">utm_campaign</label>
-        <input type="text" id="campaign" list="campaignOptions" oninput="render()">
-        <datalist id="campaignOptions">
-          <option value="social_general">
-          <option value="everyonesocial">
-          <option value="newsroom">
-          <option value="microsite">
-          <option value="industry-expertise">
-          <option value="NHDigital">
-        </datalist>
-      </div>
-      <div class="row">
+        <div class="field">
+          <label for="campaign">utm_campaign</label>
+          <input type="text" id="campaign" list="campaignOptions" oninput="render()">
+          <datalist id="campaignOptions">
+            <option value="social_general">
+            <option value="everyonesocial">
+            <option value="newsroom">
+            <option value="microsite">
+            <option value="industry-expertise">
+            <option value="NHDigital">
+          </datalist>
+        </div>
         <div class="field">
           <label for="term">utm_term <span style="font-weight:400;color:var(--nh-text-muted);">(optional)</span></label>
           <input type="text" id="term" oninput="render()">
