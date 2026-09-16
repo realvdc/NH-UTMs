@@ -38,7 +38,7 @@
 
   body {
     margin: 0;
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
     font-family: var(--nh-font-body);
     color: var(--nh-text);
     background: var(--nh-bg-light);
@@ -53,9 +53,9 @@
   .top-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-lg);
-    align-items: stretch;
-    margin-bottom: var(--space-lg);
+    gap: var(--space-md);
+    align-items: start;
+    margin-bottom: var(--space-md);
   }
 
   @media (max-width: 900px) {
@@ -68,11 +68,11 @@
     overflow: hidden;
     background: linear-gradient(135deg, #132E53 0%, #097795 100%);
     border-radius: 8px;
-    padding: var(--space-xl) var(--space-lg);
+    padding: var(--space-lg);
     color: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: var(--space-lg);
   }
 
   .hero::before {
@@ -95,24 +95,24 @@
   .hero h1 {
     font-family: var(--nh-font-display);
     font-weight: 700;
-    font-size: 40px;
+    font-size: 26px;
     color: #fff;
-    margin: 0 0 var(--space-md) 0;
+    margin: 0 0 var(--space-sm) 0;
   }
 
   .hero .lead {
     color: rgba(255,255,255,0.75);
-    font-size: 16px;
-    margin: 0 0 var(--space-lg) 0;
+    font-size: 14px;
+    margin: 0;
   }
 
   .quick-guide-label {
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--nh-teal);
-    margin: 0 0 var(--space-md) 0;
+    margin: 0 0 var(--space-sm) 0;
   }
 
   .quick-guide {
@@ -125,10 +125,10 @@
     display: flex;
     align-items: flex-start;
     gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-    font-size: 14px;
+    margin-bottom: var(--space-sm);
+    font-size: 13px;
     color: rgba(255,255,255,0.85);
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   .quick-guide li:last-child { margin-bottom: 0; }
@@ -149,11 +149,11 @@
     background: var(--nh-bg-white);
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    padding: var(--space-lg);
+    padding: var(--space-md);
   }
 
   .field {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-sm);
   }
 
   .field:last-child { margin-bottom: 0; }
@@ -167,25 +167,26 @@
 
   .field label {
     display: block;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: var(--nh-text-light);
   }
 
   .field-note {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--nh-text-muted);
   }
 
   .field .hint {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--nh-text-muted);
-    margin-top: var(--space-xs);
+    margin-top: 2px;
+    line-height: 1.3;
   }
 
   input[type="text"], input[type="url"], select {
     width: 100%;
-    padding: 10px 12px;
+    padding: 8px 10px;
     font-size: 14px;
     font-family: var(--nh-font-body);
     color: var(--nh-text);
@@ -204,7 +205,7 @@
   .row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-md);
+    gap: var(--space-sm);
   }
 
   @media (max-width: 480px) {
@@ -249,7 +250,7 @@
     gap: var(--space-sm);
     align-items: center;
     flex-wrap: wrap;
-    margin-top: var(--space-lg);
+    margin-top: var(--space-md);
   }
 
   .copied-msg {
@@ -263,10 +264,10 @@
   .copied-msg.show { opacity: 1; }
 
   footer.foot {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--nh-text-muted);
     text-align: left;
-    margin-top: var(--space-xl);
+    margin-top: var(--space-md);
   }
 
   a { color: var(--nh-teal); }
