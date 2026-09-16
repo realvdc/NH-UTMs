@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -216,49 +217,6 @@
     color: var(--nh-navy);
   }
 
-  .combo-wrap {
-    position: relative;
-  }
-
-  .combo-menu {
-    display: none;
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    background: var(--nh-bg-white);
-    border: 1px solid var(--nh-border);
-    border-radius: 4px;
-    box-shadow: 0 8px 20px rgba(19,46,83,0.14);
-    max-height: 220px;
-    overflow-y: auto;
-    z-index: 30;
-  }
-
-  .combo-menu.open {
-    display: block;
-  }
-
-  .combo-option {
-    padding: 9px 12px;
-    font-size: 14px;
-    font-family: var(--nh-font-body);
-    color: var(--nh-text);
-    cursor: pointer;
-  }
-
-  .combo-option:hover,
-  .combo-option.active {
-    background: rgba(3,159,184,0.08);
-    color: var(--nh-navy);
-  }
-
-  .combo-empty {
-    padding: 9px 12px;
-    font-size: 13px;
-    color: var(--nh-text-muted);
-  }
-
   .btn {
     display: inline-flex;
     align-items: center;
@@ -309,7 +267,6 @@
     color: var(--nh-text-muted);
     text-align: left;
     margin-top: var(--space-xl);
-    max-width: 70ch;
   }
 
   a { color: var(--nh-teal); }
@@ -333,7 +290,7 @@
           <p class="quick-guide-label">Quick guide</p>
           <ul class="quick-guide">
             <li><span class="dot"></span><span>Pick a <strong>channel preset</strong> first &mdash; it auto-fills source, medium, and campaign for that platform.</span></li>
-            <li><span class="dot"></span><span>Keep values <strong>lowercase and consistent</strong> so GA4 groups the same channel together instead of splitting it into duplicates.</span></li>
+            <li><span class="dot"></span><span>Source, medium, and campaign are <strong>automatically lowercased</strong> in the final link, so GA4 groups the same channel together instead of splitting it into duplicates.</span></li>
             <li><span class="dot"></span><span>Use <strong>term</strong> and <strong>content</strong> only when the channel calls for it &mdash; ad variant, audience segment, or post ID.</span></li>
             <li><span class="dot"></span><span>Click <strong>Copy URL</strong> and paste directly into your campaign platform &mdash; no need to double-check the raw string.</span></li>
           </ul>
@@ -356,7 +313,7 @@
             <option value="sprout">Sprout Social (scheduled social post)</option>
             <option value="everyonesocial">EveryoneSocial / NH Now (employee advocacy)</option>
             <option value="google_cpc">Google Ads (paid search)</option>
-            <option value="meta_paid">Meta Paid Social (Facebook / Instagram ads)</option>
+            <option value="paid_social">Paid Social (LinkedIn / Facebook / Instagram ads)</option>
             <option value="organic_social">Organic Social (manual post)</option>
             <option value="hubspot_email">Email — HubSpot</option>
             <option value="display">Display Ads</option>
@@ -368,31 +325,52 @@
         <div class="row">
           <div class="field">
             <label for="source">Source</label>
-            <div class="combo-wrap">
-              <input type="text" id="source" autocomplete="off" oninput="render()">
-              <div class="combo-menu" id="sourceMenu"></div>
-            </div>
+            <select id="source" onchange="render()">
+              <option value="">— Select —</option>
+              <option value="displayads">displayads</option>
+              <option value="facebook">facebook</option>
+              <option value="google">google</option>
+              <option value="hs_automation">hs_automation</option>
+              <option value="hs_email">hs_email</option>
+              <option value="instagram">instagram</option>
+              <option value="linkedin">linkedin</option>
+              <option value="substack">substack</option>
+              <option value="twitter">twitter</option>
+            </select>
+            <p class="hint">Platform name only &mdash; lowercased automatically in the final link.</p>
           </div>
           <div class="field">
             <label for="medium">Medium</label>
-            <div class="combo-wrap">
-              <input type="text" id="medium" autocomplete="off" oninput="render()">
-              <div class="combo-menu" id="mediumMenu"></div>
-            </div>
+            <select id="medium" onchange="render()">
+              <option value="">— Select —</option>
+              <option value="cpc">cpc</option>
+              <option value="display">display</option>
+              <option value="email">email</option>
+              <option value="event">event</option>
+              <option value="facebook">facebook</option>
+              <option value="instagram">instagram</option>
+              <option value="linkedin">linkedin</option>
+              <option value="network">network</option>
+              <option value="paidsocial">paidsocial</option>
+              <option value="partner">partner</option>
+              <option value="referral">referral</option>
+              <option value="sales">sales</option>
+              <option value="social">social</option>
+              <option value="twitter">twitter</option>
+            </select>
           </div>
         </div>
 
         <div class="row">
           <div class="field">
             <label for="campaign">Campaign</label>
-            <div class="combo-wrap">
-              <input type="text" id="campaign" autocomplete="off" oninput="render()">
-              <div class="combo-menu" id="campaignMenu"></div>
-            </div>
+            <input type="text" id="campaign" oninput="render()">
+            <p class="hint">Lowercase, hyphens or underscores only, no spaces. Avoid &ldquo;gtm&rdquo; as a root word or suffix &mdash; it collides with other reporting.</p>
           </div>
           <div class="field">
             <label for="content">Content</label>
             <input type="text" id="content" oninput="render()">
+            <p class="hint">Creative or ad variant, if the channel calls for it (e.g. carousel-v1).</p>
           </div>
         </div>
 
@@ -402,6 +380,7 @@
             <span class="field-note">optional</span>
           </div>
           <input type="text" id="term" oninput="render()">
+          <p class="hint">Audience segment or keyword, if the channel calls for it (e.g. director-financial-services).</p>
         </div>
 
         <div class="field" id="epochHelper" style="display:none;">
@@ -440,9 +419,9 @@
       source: "google", medium: "cpc", campaign: "", term: "", content: "",
       showEpoch: false
     },
-    meta_paid: {
-      hint: "Campaign naming convention example: REGION_##_rocketppc_performance_audience_geo (e.g. UK_06_rocketppc_performance_warm_atc_uk).",
-      source: "facebook", medium: "paidsocial", campaign: "", term: "", content: "",
+    paid_social: {
+      hint: "Set Source to the platform running the ad (linkedin, facebook, instagram). Campaign format: li_[year][quarter]_[theme] — lowercase, hyphens or underscores only, no spaces, never “gtm” as a root word or suffix. Put audience in Term and creative/ad variant in Content instead of packing them into Campaign.",
+      source: "linkedin", medium: "paidsocial", campaign: "", term: "", content: "",
       showEpoch: false
     },
     organic_social: {
@@ -466,59 +445,6 @@
       showEpoch: false
     }
   };
-
-  const comboOptions = {
-    source: ['google', 'facebook', 'instagram', 'linkedin', 'twitter', 'hs_automation', 'hs_email', 'substack', 'displayads'],
-    medium: ['cpc', 'paidsocial', 'display', 'social', 'email', 'referral', 'network'],
-    campaign: ['social_general', 'everyonesocial', 'newsroom', 'microsite', 'industry-expertise', 'NHDigital']
-  };
-
-  function renderComboMenu(id) {
-    const input = document.getElementById(id);
-    const menu = document.getElementById(id + 'Menu');
-    const query = input.value.trim().toLowerCase();
-    const matches = comboOptions[id].filter(opt => opt.toLowerCase().includes(query));
-    menu.innerHTML = '';
-    if (matches.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'combo-empty';
-      empty.textContent = 'No matches — keep typing to use a custom value';
-      menu.appendChild(empty);
-    } else {
-      matches.forEach(opt => {
-        const item = document.createElement('div');
-        item.className = 'combo-option';
-        item.textContent = opt;
-        item.onmousedown = (e) => {
-          e.preventDefault();
-          input.value = opt;
-          closeComboMenu(id);
-          render();
-        };
-        menu.appendChild(item);
-      });
-    }
-    menu.classList.add('open');
-  }
-
-  function closeComboMenu(id) {
-    document.getElementById(id + 'Menu').classList.remove('open');
-  }
-
-  function closeAllComboMenus() {
-    Object.keys(comboOptions).forEach(closeComboMenu);
-  }
-
-  Object.keys(comboOptions).forEach(id => {
-    const input = document.getElementById(id);
-    input.addEventListener('focus', () => renderComboMenu(id));
-    input.addEventListener('input', () => renderComboMenu(id));
-    input.addEventListener('blur', () => setTimeout(() => closeComboMenu(id), 100));
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.combo-wrap')) closeAllComboMenus();
-  });
 
   let generatedUrl = "";
 
@@ -547,6 +473,10 @@
     const base = document.getElementById('baseUrl').value.trim();
 
     const params = [];
+    // Source, medium, and campaign drive GA4 channel grouping, so force lowercase to avoid
+    // "LinkedIn" vs "linkedin" splitting the same channel into separate rows. Term/content are
+    // left as typed since they sometimes carry a case-sensitive token (e.g. Sprout's {TIMESTAMP_EPOCH}).
+    const lowercaseFields = ['source', 'medium', 'campaign'];
     const fields = [
       ['utm_source', 'source'],
       ['utm_medium', 'medium'],
@@ -555,7 +485,8 @@
       ['utm_content', 'content']
     ];
     fields.forEach(([key, id]) => {
-      const val = document.getElementById(id).value.trim();
+      let val = document.getElementById(id).value.trim();
+      if (lowercaseFields.includes(id)) val = val.toLowerCase();
       if (val) params.push(key + '=' + encodeURIComponent(val).replace(/%7B/g, '{').replace(/%7D/g, '}'));
     });
 
