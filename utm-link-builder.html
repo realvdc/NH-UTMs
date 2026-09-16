@@ -216,6 +216,49 @@
     color: var(--nh-navy);
   }
 
+  .combo-wrap {
+    position: relative;
+  }
+
+  .combo-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: var(--nh-bg-white);
+    border: 1px solid var(--nh-border);
+    border-radius: 4px;
+    box-shadow: 0 8px 20px rgba(19,46,83,0.14);
+    max-height: 220px;
+    overflow-y: auto;
+    z-index: 30;
+  }
+
+  .combo-menu.open {
+    display: block;
+  }
+
+  .combo-option {
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: var(--nh-font-body);
+    color: var(--nh-text);
+    cursor: pointer;
+  }
+
+  .combo-option:hover,
+  .combo-option.active {
+    background: rgba(3,159,184,0.08);
+    color: var(--nh-navy);
+  }
+
+  .combo-empty {
+    padding: 9px 12px;
+    font-size: 13px;
+    color: var(--nh-text-muted);
+  }
+
   .btn {
     display: inline-flex;
     align-items: center;
@@ -325,46 +368,27 @@
         <div class="row">
           <div class="field">
             <label for="source">Source</label>
-            <input type="text" id="source" list="sourceOptions" oninput="render()">
-            <datalist id="sourceOptions">
-              <option value="google">
-              <option value="facebook">
-              <option value="instagram">
-              <option value="linkedin">
-              <option value="twitter">
-              <option value="hs_automation">
-              <option value="hs_email">
-              <option value="substack">
-              <option value="displayads">
-            </datalist>
+            <div class="combo-wrap">
+              <input type="text" id="source" autocomplete="off" oninput="render()">
+              <div class="combo-menu" id="sourceMenu"></div>
+            </div>
           </div>
           <div class="field">
             <label for="medium">Medium</label>
-            <input type="text" id="medium" list="mediumOptions" oninput="render()">
-            <datalist id="mediumOptions">
-              <option value="cpc">
-              <option value="paidsocial">
-              <option value="display">
-              <option value="social">
-              <option value="email">
-              <option value="referral">
-              <option value="network">
-            </datalist>
+            <div class="combo-wrap">
+              <input type="text" id="medium" autocomplete="off" oninput="render()">
+              <div class="combo-menu" id="mediumMenu"></div>
+            </div>
           </div>
         </div>
 
         <div class="row">
           <div class="field">
             <label for="campaign">Campaign</label>
-            <input type="text" id="campaign" list="campaignOptions" oninput="render()">
-            <datalist id="campaignOptions">
-              <option value="social_general">
-              <option value="everyonesocial">
-              <option value="newsroom">
-              <option value="microsite">
-              <option value="industry-expertise">
-              <option value="NHDigital">
-            </datalist>
+            <div class="combo-wrap">
+              <input type="text" id="campaign" autocomplete="off" oninput="render()">
+              <div class="combo-menu" id="campaignMenu"></div>
+            </div>
           </div>
           <div class="field">
             <label for="content">Content</label>
@@ -442,6 +466,59 @@
       showEpoch: false
     }
   };
+
+  const comboOptions = {
+    source: ['google', 'facebook', 'instagram', 'linkedin', 'twitter', 'hs_automation', 'hs_email', 'substack', 'displayads'],
+    medium: ['cpc', 'paidsocial', 'display', 'social', 'email', 'referral', 'network'],
+    campaign: ['social_general', 'everyonesocial', 'newsroom', 'microsite', 'industry-expertise', 'NHDigital']
+  };
+
+  function renderComboMenu(id) {
+    const input = document.getElementById(id);
+    const menu = document.getElementById(id + 'Menu');
+    const query = input.value.trim().toLowerCase();
+    const matches = comboOptions[id].filter(opt => opt.toLowerCase().includes(query));
+    menu.innerHTML = '';
+    if (matches.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'combo-empty';
+      empty.textContent = 'No matches — keep typing to use a custom value';
+      menu.appendChild(empty);
+    } else {
+      matches.forEach(opt => {
+        const item = document.createElement('div');
+        item.className = 'combo-option';
+        item.textContent = opt;
+        item.onmousedown = (e) => {
+          e.preventDefault();
+          input.value = opt;
+          closeComboMenu(id);
+          render();
+        };
+        menu.appendChild(item);
+      });
+    }
+    menu.classList.add('open');
+  }
+
+  function closeComboMenu(id) {
+    document.getElementById(id + 'Menu').classList.remove('open');
+  }
+
+  function closeAllComboMenus() {
+    Object.keys(comboOptions).forEach(closeComboMenu);
+  }
+
+  Object.keys(comboOptions).forEach(id => {
+    const input = document.getElementById(id);
+    input.addEventListener('focus', () => renderComboMenu(id));
+    input.addEventListener('input', () => renderComboMenu(id));
+    input.addEventListener('blur', () => setTimeout(() => closeComboMenu(id), 100));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.combo-wrap')) closeAllComboMenus();
+  });
 
   let generatedUrl = "";
 
